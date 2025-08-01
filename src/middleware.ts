@@ -107,12 +107,19 @@ function handleAuthFailure(
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
-  // 否则重定向到登录页面
-  const loginUrl = new URL('/login', request.url);
-  // 保留完整的URL，包括查询参数
+  // // 否则重定向到登录页面
+  // const loginUrl = new URL('/login', request.url);
+  // // 保留完整的URL，包括查询参数
+  // const fullUrl = `${pathname}${request.nextUrl.search}`;
+  // loginUrl.searchParams.set('redirect', fullUrl);
+  // return NextResponse.redirect(loginUrl);
+
+
+  // 否则重定向到登录页面（相对路径）
   const fullUrl = `${pathname}${request.nextUrl.search}`;
-  loginUrl.searchParams.set('redirect', fullUrl);
-  return NextResponse.redirect(loginUrl);
+  const relativeRedirect = `/login?redirect=${encodeURIComponent(fullUrl)}`;
+  return NextResponse.redirect(relativeRedirect);
+  
 }
 
 // 判断是否需要跳过认证的路径
