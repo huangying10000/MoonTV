@@ -117,8 +117,10 @@ function handleAuthFailure(
 
   // 否则重定向到登录页面（相对路径）
   const fullUrl = `${pathname}${request.nextUrl.search}`;
-  const relativeRedirect = `/login?redirect=${encodeURIComponent(fullUrl)}`;
-  return NextResponse.redirect(relativeRedirect);
+  const redirectUrl = new URL('/login', request.nextUrl.origin);
+  redirectUrl.searchParams.set('redirect', fullUrl);
+
+  return NextResponse.redirect(redirectUrl);
   
 }
 
